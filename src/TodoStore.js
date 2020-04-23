@@ -8,17 +8,13 @@ export const TodoContext = React.createContext();
 
 function TodoStore() {
   const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState();
 
   const loading = useFetch(setTodos, 'http://localhost:8080/todo');
 
-  const changeInputData = (e) => {
-    setNewTodo(e.target.value);
-  };
-  const addTodo = (e) => {
-    e.preventDefault();
+  const addTodo = (newTodo) => {
     setTodos([...todos, { title: newTodo, id: todos.length, status: 'todo' }]);
   };
+
   const changeTodoStatus = (id) => {
     const updateTodos = todos.map(todo => {
       if (todo.id === +id) {
@@ -35,7 +31,7 @@ function TodoStore() {
   }, [todos]);
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, loading, changeInputData, changeTodoStatus }}>
+    <TodoContext.Provider value={{ todos, addTodo, loading, changeTodoStatus }}>
       <Header />
       <Form />
       <List />

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import List from './List';
 import Header from './Header';
+import Form from './Form';
 import useFetch from './useFetch';
 
-function App() {
+export const TodoContext = React.createContext();
+
+function TodoStore() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState();
 
@@ -32,17 +35,12 @@ function App() {
   }, [todos]);
 
   return (
-    <>
-      <Header todos={todos} />
-
-      <form action="">
-        <input type="text" name="" onChange={changeInputData} />
-        <button onClick={addTodo}>할일추가</button>
-      </form>
-
-      <List loading={loading} todos={todos} changeTodoStatus={changeTodoStatus} />
-    </>
+    <TodoContext.Provider value={{ todos, addTodo, loading, changeInputData, changeTodoStatus }}>
+      <Header />
+      <Form />
+      <List />
+    </TodoContext.Provider>
   );
 }
 
-export default App;
+export default TodoStore;

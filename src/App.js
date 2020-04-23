@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import List from './List';
+import Header from './Header';
 import useFetch from './useFetch';
 
 function App() {
@@ -15,6 +16,16 @@ function App() {
     e.preventDefault();
     setTodos([...todos, { title: newTodo, id: todos.length, status: 'todo' }]);
   };
+  const changeTodoStatus = (id) => {
+    const updateTodos = todos.map(todo => {
+      if (todo.id === +id) {
+        if (todo.status === 'done') todo.status = 'todo';
+        else todo.status = 'done';
+      }
+      return todo;
+    });
+    setTodos(updateTodos);
+  }
 
   useEffect(() => {
     console.log("새로운 내용이 렌더링됐네요", todos);
@@ -22,14 +33,14 @@ function App() {
 
   return (
     <>
-      <h1>todo 애플리케이션</h1>
+      <Header todos={todos} />
 
       <form action="">
         <input type="text" name="" onChange={changeInputData} />
         <button onClick={addTodo}>할일추가</button>
       </form>
 
-      <List loading={loading} todos={todos} />
+      <List loading={loading} todos={todos} changeTodoStatus={changeTodoStatus} />
     </>
   );
 }
